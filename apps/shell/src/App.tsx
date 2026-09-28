@@ -1,9 +1,14 @@
-/**
- * For now, this is a regular React component.
- *
- * In step 5, the two placeholder sections will be replaced with components
- * downloaded from the Trade Panel A and Trade Panel B applications.
- */
+import { lazy, Suspense } from 'react';
+
+// These imports are resolved at runtime from the two remote applications.
+// Each remote exports a named component, while React.lazy expects `default`.
+const TradePanelA = lazy(() =>
+  import('tradePanelA/TradePanel').then(({ TradePanel }) => ({ default: TradePanel }))
+);
+const TradePanelB = lazy(() =>
+  import('tradePanelB/TradePanel').then(({ TradePanel }) => ({ default: TradePanel }))
+);
+
 export function App() {
   return (
     <main className="app-shell">
@@ -16,36 +21,27 @@ export function App() {
       </header>
 
       <section className="dashboard" aria-label="Trading dashboard">
-        <PanelPlaceholder
-          title="Trade Panel A"
-          description="This area will become the order-entry and open-orders microfrontend."
-          port="Future remote: port 3001"
-        />
-        <PanelPlaceholder
-          title="Trade Panel B"
-          description="This area will become the market-watchlist microfrontend."
-          port="Future remote: port 3002"
-        />
+        <Suspense fallback={<PanelLoading name="Trade Panel A" />}>
+          <TradePanelA />
+        </Suspense>
+        <Suspense fallback={<PanelLoading name="Trade Panel B" />}>
+          <TradePanelB />
+        </Suspense>
       </section>
     </main>
   );
 }
 
-type PanelPlaceholderProps = {
-  title: string;
-  description: string;
-  port: string;
+type PanelLoadingProps = {
+  name: string;
 };
 
-// Keeping this placeholder as a separate component makes the dashboard easier
-// to read. Later, each use will be replaced by one remote React component.
-function PanelPlaceholder({ title, description, port }: PanelPlaceholderProps) {
+function PanelLoading({ name }: PanelLoadingProps) {
   return (
     <article className="panel-placeholder">
-      <p className="eyebrow">{port}</p>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <p className="waiting">Waiting for microfrontend implementation</p>
+      <p className="eyebrow">Remote microfrontend</p>
+      <h2>{name}</h2>
+      <p className="waiting">Loading remote application…</p>
     </article>
   );
 }

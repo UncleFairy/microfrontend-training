@@ -74,6 +74,8 @@ release schedules, and owners while still appearing together to a user.
 
 ### 5. Add Webpack Module Federation
 
+**Status:** complete
+
 Configure the panels as **remotes** and the shell as a **host**.
 
 - Each panel exposes one React component through Module Federation.

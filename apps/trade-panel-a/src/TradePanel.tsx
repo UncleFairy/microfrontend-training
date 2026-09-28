@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import './styles.css';
 
 type OrderSide = 'Buy' | 'Sell';
 

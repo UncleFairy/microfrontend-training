@@ -1,12 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
+const dependencies = require('./package.json').dependencies;
 
 /**
  * Webpack is the tool that prepares our source code for the browser.
  *
- * At this stage it has one job: bundle the shell application. In step 5, we
- * will extend this same file with Module Federation so that the shell can load
- * the two trade panels at runtime.
+ * Module Federation lets this host load the two independently built trade
+ * panels at runtime instead of compiling their source into this bundle.
  */
 module.exports = {
   // index.tsx is where React starts rendering our application.
@@ -15,7 +16,10 @@ module.exports = {
   output: {
     // `dist` is generated output. It is safe to delete and is in .gitignore.
     path: path.resolve(__dirname, 'dist'),
-    clean: true
+    clean: true,
+    // Remote chunks are served by the app that built them.
+    publicPath: 'auto',
+    uniqueName: 'shell'
   },
 
   resolve: {
@@ -47,6 +51,17 @@ module.exports = {
   },
 
   plugins: [
+    new ModuleFederationPlugin({
+      name: 'shell',
+      remotes: {
+        tradePanelA: 'tradePanelA@http://localhost:3001/remoteEntry.js',
+        tradePanelB: 'tradePanelB@http://localhost:3002/remoteEntry.js'
+      },
+      shared: {
+        react: { singleton: true, requiredVersion: dependencies.react },
+        'react-dom': { singleton: true, requiredVersion: dependencies['react-dom'] }
+      }
+    }),
     // Creates dist/index.html and automatically adds the bundled script to it.
     new HtmlWebpackPlugin({ template: './src/index.html' })
   ],
