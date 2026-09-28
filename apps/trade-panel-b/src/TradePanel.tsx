@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import './styles.css';
 
+export type TradePanelProps = {
+  // Optional so this remote remains usable on its own at port 3002.
+  onSymbolSelected?: (symbol: string) => void;
+};
+
 type Instrument = {
   symbol: string;
   name: string;
@@ -18,13 +23,17 @@ const instruments: Instrument[] = [
 /**
  * This feature owns market-watch display state while it is standalone.
  *
- * The selected symbol is intentionally easy to find: in step 6 we will change
- * this component so it calls a function supplied by the shell whenever the
- * user selects an instrument.
+ * It owns its watchlist display state and tells the shell about a selection
+ * through an explicit callback when it is embedded in the dashboard.
  */
-export function TradePanel() {
+export function TradePanel({ onSymbolSelected }: TradePanelProps) {
   const [selectedSymbol, setSelectedSymbol] = useState(instruments[0].symbol);
   const selectedInstrument = instruments.find(({ symbol }) => symbol === selectedSymbol) ?? instruments[0];
+
+  function selectSymbol(symbol: string) {
+    setSelectedSymbol(symbol);
+    onSymbolSelected?.(symbol);
+  }
 
   return (
     <main className="trade-panel">
@@ -52,7 +61,7 @@ export function TradePanel() {
                 className={`instrument ${isSelected ? 'selected' : ''}`}
                 key={instrument.symbol}
                 type="button"
-                onClick={() => setSelectedSymbol(instrument.symbol)}
+                onClick={() => selectSymbol(instrument.symbol)}
                 aria-pressed={isSelected}
               >
                 <span className="instrument-name">
@@ -75,8 +84,8 @@ export function TradePanel() {
         <p className="eyebrow">Selected instrument</p>
         <h2 id="selected-instrument-title">{selectedInstrument.symbol}</h2>
         <p>
-          {selectedInstrument.name} is selected in this panel. Once microfrontends
-          are connected, the shell will share this choice with the order-entry panel.
+          {selectedInstrument.name} is selected here and shared with the shell,
+          which passes it to the order-entry panel.
         </p>
       </section>
     </main>

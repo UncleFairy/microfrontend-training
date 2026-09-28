@@ -89,6 +89,8 @@ as long as their public contract stays compatible.
 
 ### 6. Define communication contracts
 
+**Status:** complete
+
 Make the shell the coordinator for shared information.
 
 - Panel B tells the shell when a symbol is selected.

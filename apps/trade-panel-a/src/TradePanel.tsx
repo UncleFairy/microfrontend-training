@@ -1,14 +1,23 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import './styles.css';
 
-type OrderSide = 'Buy' | 'Sell';
+export type OrderSide = 'Buy' | 'Sell';
 
-type Order = {
-  id: number;
+export type SubmittedOrder = {
   symbol: string;
   side: OrderSide;
   quantity: number;
   price: number;
+};
+
+export type TradePanelProps = {
+  // Optional so this remote remains usable on its own at port 3001.
+  selectedSymbol?: string;
+  onOrderSubmitted?: (order: SubmittedOrder) => void;
+};
+
+type Order = SubmittedOrder & {
+  id: number;
 };
 
 const initialOrders: Order[] = [
@@ -19,17 +28,24 @@ const initialOrders: Order[] = [
 /**
  * This is the feature component owned by Trade Panel A.
  *
- * It deliberately keeps its own local form state. Local UI state belongs in
- * the feature that uses it. In a later step, the selected symbol will arrive
- * from the shell through a prop instead.
+ * It owns its local form state, while the shell can provide a symbol and be
+ * notified after an order is submitted through this small public contract.
  */
-export function TradePanel() {
-  const [symbol, setSymbol] = useState('AAPL');
+export function TradePanel({ selectedSymbol, onOrderSubmitted }: TradePanelProps) {
+  const [symbol, setSymbol] = useState(selectedSymbol ?? 'AAPL');
   const [side, setSide] = useState<OrderSide>('Buy');
   const [quantity, setQuantity] = useState(10);
   const [price, setPrice] = useState(195.2);
   const [orders, setOrders] = useState(initialOrders);
   const [message, setMessage] = useState('');
+
+  // A watchlist selection is an intentional cross-panel action, so it
+  // replaces the form symbol when the shell supplies a new value.
+  useEffect(() => {
+    if (selectedSymbol) {
+      setSymbol(selectedSymbol);
+    }
+  }, [selectedSymbol]);
 
   function submitOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,6 +62,12 @@ export function TradePanel() {
 
     setOrders((currentOrders) => [order, ...currentOrders]);
     setMessage(`${order.side} order for ${order.quantity} ${order.symbol} submitted.`);
+    onOrderSubmitted?.({
+      symbol: order.symbol,
+      side: order.side,
+      quantity: order.quantity,
+      price: order.price
+    });
   }
 
   return (
