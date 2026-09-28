@@ -105,6 +105,8 @@ applications.
 
 ### 7. Handle remote failures and loading states
 
+**Status:** complete
+
 Add safe user-facing behaviour for operational problems.
 
 - Show a loading message while a remote downloads.
