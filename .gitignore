@@ -1,0 +1,12 @@
+# Packages are downloaded locally and can always be recreated with `npm install`.
+node_modules/
+
+# Each application creates its production files in a dist folder.
+dist/
+
+# Webpack's cached build data. It makes later builds faster but is not source code.
+.webpack/
+
+# Useful locally, but may contain private machine-specific settings.
+.env
+.env.local

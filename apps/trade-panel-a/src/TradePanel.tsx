@@ -1,0 +1,139 @@
+import { FormEvent, useState } from 'react';
+
+type OrderSide = 'Buy' | 'Sell';
+
+type Order = {
+  id: number;
+  symbol: string;
+  side: OrderSide;
+  quantity: number;
+  price: number;
+};
+
+const initialOrders: Order[] = [
+  { id: 1, symbol: 'AAPL', side: 'Buy', quantity: 10, price: 195.2 },
+  { id: 2, symbol: 'MSFT', side: 'Sell', quantity: 5, price: 412.65 }
+];
+
+/**
+ * This is the feature component owned by Trade Panel A.
+ *
+ * It deliberately keeps its own local form state. Local UI state belongs in
+ * the feature that uses it. In a later step, the selected symbol will arrive
+ * from the shell through a prop instead.
+ */
+export function TradePanel() {
+  const [symbol, setSymbol] = useState('AAPL');
+  const [side, setSide] = useState<OrderSide>('Buy');
+  const [quantity, setQuantity] = useState(10);
+  const [price, setPrice] = useState(195.2);
+  const [orders, setOrders] = useState(initialOrders);
+  const [message, setMessage] = useState('');
+
+  function submitOrder(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    // A real application would call an order API here. For this learning
+    // example, add the order to local state so the result is immediately clear.
+    const order: Order = {
+      id: Date.now(),
+      symbol: symbol.trim().toUpperCase(),
+      side,
+      quantity,
+      price
+    };
+
+    setOrders((currentOrders) => [order, ...currentOrders]);
+    setMessage(`${order.side} order for ${order.quantity} ${order.symbol} submitted.`);
+  }
+
+  return (
+    <main className="trade-panel">
+      <header className="panel-header">
+        <div>
+          <p className="eyebrow">Standalone remote candidate · port 3001</p>
+          <h1>Order Entry</h1>
+        </div>
+        <span className="connection-status">Simulated account</span>
+      </header>
+
+      <section className="card" aria-labelledby="new-order-title">
+        <h2 id="new-order-title">New order</h2>
+        <form className="order-form" onSubmit={submitOrder}>
+          <label>
+            Symbol
+            <input
+              value={symbol}
+              onChange={(event) => setSymbol(event.target.value)}
+              maxLength={12}
+              required
+            />
+          </label>
+
+          <label>
+            Side
+            <select value={side} onChange={(event) => setSide(event.target.value as OrderSide)}>
+              <option>Buy</option>
+              <option>Sell</option>
+            </select>
+          </label>
+
+          <label>
+            Quantity
+            <input
+              type="number"
+              value={quantity}
+              onChange={(event) => setQuantity(Number(event.target.value))}
+              min="1"
+              required
+            />
+          </label>
+
+          <label>
+            Limit price
+            <input
+              type="number"
+              value={price}
+              onChange={(event) => setPrice(Number(event.target.value))}
+              min="0.01"
+              step="0.01"
+              required
+            />
+          </label>
+
+          <button type="submit">Submit {side.toLowerCase()} order</button>
+        </form>
+        {message && <p className="success-message" role="status">{message}</p>}
+      </section>
+
+      <section className="card" aria-labelledby="open-orders-title">
+        <div className="section-heading">
+          <h2 id="open-orders-title">Open orders</h2>
+          <span>{orders.length} total</span>
+        </div>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Side</th>
+                <th>Quantity</th>
+                <th>Limit price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td>{order.symbol}</td>
+                  <td className={order.side === 'Buy' ? 'buy' : 'sell'}>{order.side}</td>
+                  <td>{order.quantity}</td>
+                  <td>${order.price.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  );
+}

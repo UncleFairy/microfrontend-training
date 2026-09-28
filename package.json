@@ -1,0 +1,21 @@
+{
+  "name": "microfrontend-training",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A beginner-friendly React and Webpack microfrontend learning project.",
+  "workspaces": [
+    "apps/*"
+  ],
+  "overrides": {
+    "typescript": "5.9.3"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev:shell": "npm run dev --workspace=shell",
+    "dev:trade-panel-a": "npm run dev --workspace=trade-panel-a",
+    "dev:trade-panel-b": "npm run dev --workspace=trade-panel-b",
+    "build": "npm run build --workspaces"
+  }
+}
