@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "jsx": "react-jsx",
+    "types": ["@testing-library/jest-dom/vitest"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

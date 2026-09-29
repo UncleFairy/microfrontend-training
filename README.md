@@ -43,7 +43,22 @@ npm run typecheck
 
 # Build every workspace that has a build script.
 npm run build
+
+# Run all unit tests.
+npm test
 ```
+
+## Unit tests
+
+The first test layer checks each remote in isolation, next to its feature
+component. This catches broken user-facing behaviour without requiring remote
+servers or Module Federation to be running.
+
+- `trade-panel-a`: shell-provided symbol updates and submitted-order callbacks.
+- `trade-panel-b`: watchlist selection and selected-symbol callbacks.
+
+Integration tests for the shell and remotes will be added separately, because
+they verify a different boundary: the applications working together at runtime.
 
 ## Learning sequence
 
