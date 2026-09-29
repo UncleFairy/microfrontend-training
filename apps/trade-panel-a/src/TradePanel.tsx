@@ -1,23 +1,14 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { Button, Card } from '@trading/shared-ui';
+import type { Order, OrderSide, SubmittedOrder } from '@trading/trade-types';
 import './styles.css';
 
-export type OrderSide = 'Buy' | 'Sell';
-
-export type SubmittedOrder = {
-  symbol: string;
-  side: OrderSide;
-  quantity: number;
-  price: number;
-};
+export type { OrderSide, SubmittedOrder } from '@trading/trade-types';
 
 export type TradePanelProps = {
   // Optional so this remote remains usable on its own at port 3001.
   selectedSymbol?: string;
   onOrderSubmitted?: (order: SubmittedOrder) => void;
-};
-
-type Order = SubmittedOrder & {
-  id: number;
 };
 
 const initialOrders: Order[] = [
@@ -80,7 +71,7 @@ export function TradePanel({ selectedSymbol, onOrderSubmitted }: TradePanelProps
         <span className="connection-status">Simulated account</span>
       </header>
 
-      <section className="card" aria-labelledby="new-order-title">
+      <Card aria-labelledby="new-order-title">
         <h2 id="new-order-title">New order</h2>
         <form className="order-form" onSubmit={submitOrder}>
           <label>
@@ -124,12 +115,14 @@ export function TradePanel({ selectedSymbol, onOrderSubmitted }: TradePanelProps
             />
           </label>
 
-          <button type="submit">Submit {side.toLowerCase()} order</button>
+          <Button className="submit-order" type="submit">
+            Submit {side.toLowerCase()} order
+          </Button>
         </form>
         {message && <p className="success-message" role="status">{message}</p>}
-      </section>
+      </Card>
 
-      <section className="card" aria-labelledby="open-orders-title">
+      <Card aria-labelledby="open-orders-title">
         <div className="section-heading">
           <h2 id="open-orders-title">Open orders</h2>
           <span>{orders.length} total</span>
@@ -156,7 +149,7 @@ export function TradePanel({ selectedSymbol, onOrderSubmitted }: TradePanelProps
             </tbody>
           </table>
         </div>
-      </section>
+      </Card>
     </main>
   );
 }

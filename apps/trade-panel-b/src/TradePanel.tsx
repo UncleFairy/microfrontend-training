@@ -1,16 +1,11 @@
 import { useState } from 'react';
+import { Card } from '@trading/shared-ui';
+import type { Instrument } from '@trading/trade-types';
 import './styles.css';
 
 export type TradePanelProps = {
   // Optional so this remote remains usable on its own at port 3002.
   onSymbolSelected?: (symbol: string) => void;
-};
-
-type Instrument = {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
 };
 
 const instruments: Instrument[] = [
@@ -45,7 +40,7 @@ export function TradePanel({ onSymbolSelected }: TradePanelProps) {
         <span className="connection-status">Delayed prices</span>
       </header>
 
-      <section className="card" aria-labelledby="watchlist-title">
+      <Card aria-labelledby="watchlist-title">
         <div className="section-heading">
           <h2 id="watchlist-title">Watchlist</h2>
           <span>Select an instrument</span>
@@ -78,16 +73,16 @@ export function TradePanel({ onSymbolSelected }: TradePanelProps) {
             );
           })}
         </div>
-      </section>
+      </Card>
 
-      <section className="card selected-detail" aria-labelledby="selected-instrument-title">
+      <Card className="selected-detail" aria-labelledby="selected-instrument-title">
         <p className="eyebrow">Selected instrument</p>
         <h2 id="selected-instrument-title">{selectedInstrument.symbol}</h2>
         <p>
           {selectedInstrument.name} is selected here and shared with the shell,
           which passes it to the order-entry panel.
         </p>
-      </section>
+      </Card>
     </main>
   );
 }

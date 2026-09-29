@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { TradePanel } from './TradePanel';
+import '@trading/shared-ui/styles.css';
 
 const rootElement = document.getElementById('root');
 

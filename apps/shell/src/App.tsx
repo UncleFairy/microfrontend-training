@@ -6,7 +6,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { SubmittedOrder } from "tradePanelA/TradePanel";
+import { Button, Card } from "@trading/shared-ui";
+import type { SubmittedOrder } from "@trading/trade-types";
 
 export function App() {
   // The shell owns cross-panel state. The panels only receive data and report
@@ -140,21 +141,22 @@ class RemoteErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <article className="panel-unavailable" role="alert">
+        <Card className="panel-unavailable" role="alert">
           <p className="eyebrow">Remote microfrontend unavailable</p>
           <h2>{this.props.name}</h2>
           <p>
             It could not be loaded. Check that its service is available, then
             try again.
           </p>
-          <button
+          <Button
             className="retry-button"
-            type="button"
             onClick={this.props.onRetry}
+            type="button"
+            variant="warning"
           >
             Retry {this.props.name}
-          </button>
-        </article>
+          </Button>
+        </Card>
       );
     }
 
@@ -168,10 +170,10 @@ type PanelLoadingProps = {
 
 function PanelLoading({ name }: PanelLoadingProps) {
   return (
-    <article className="panel-placeholder">
+    <Card className="panel-placeholder">
       <p className="eyebrow">Remote microfrontend</p>
       <h2>{name}</h2>
       <p className="waiting">Loading remote application…</p>
-    </article>
+    </Card>
   );
 }

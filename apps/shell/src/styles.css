@@ -116,19 +116,7 @@ h2 {
 }
 
 .retry-button {
-  min-height: 2.6rem;
   padding: 0.5rem 0.8rem;
-  border: 0;
-  border-radius: 0.4rem;
-  color: #082f49;
-  background: #fcd34d;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.retry-button:hover {
-  background: #fde68a;
 }
 
 .panel-placeholder > p:not(.eyebrow):not(.waiting) {

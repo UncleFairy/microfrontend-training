@@ -1,0 +1,45 @@
+:root {
+  --trading-color-background: #0d1422;
+  --trading-color-surface: #151f31;
+  --trading-color-border: #2a405f;
+  --trading-color-accent: #7dd3fc;
+  --trading-color-text: #e7edf7;
+  --trading-space-small: 0.65rem;
+  --trading-space-medium: 1rem;
+  --trading-space-large: 1.4rem;
+}
+
+.shared-card {
+  margin-bottom: 1.25rem;
+  padding: var(--trading-space-large);
+  border: 1px solid var(--trading-color-border);
+  border-radius: 0.8rem;
+  background: var(--trading-color-surface);
+}
+
+.shared-button {
+  min-height: 2.6rem;
+  border: 0;
+  border-radius: 0.4rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shared-button--primary {
+  color: #082f49;
+  background: var(--trading-color-accent);
+}
+
+.shared-button--primary:hover {
+  background: #bae6fd;
+}
+
+.shared-button--warning {
+  color: #082f49;
+  background: #fcd34d;
+}
+
+.shared-button--warning:hover {
+  background: #fde68a;
+}

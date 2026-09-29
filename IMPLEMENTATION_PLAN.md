@@ -120,6 +120,8 @@ dashboard unusable.
 
 ### 8. Introduce shared UI and type packages carefully
 
+**Status:** complete
+
 Create packages only for genuinely common code.
 
 - A small shared design system: `Button`, `Card`, colours, and spacing.

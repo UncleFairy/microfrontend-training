@@ -68,14 +68,6 @@ h2 {
   white-space: nowrap;
 }
 
-.card {
-  margin-bottom: 1.25rem;
-  padding: 1.4rem;
-  border: 1px solid #2a405f;
-  border-radius: 0.8rem;
-  background: #151f31;
-}
-
 .watchlist {
   display: grid;
   gap: 0.65rem;

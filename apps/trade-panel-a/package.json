@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@trading/shared-ui": "^1.0.0",
+    "@trading/trade-types": "^1.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

@@ -1,14 +1,8 @@
 declare module 'tradePanelA/TradePanel' {
   import { ComponentType } from 'react';
+  import type { SubmittedOrder } from '@trading/trade-types';
 
-  export type OrderSide = 'Buy' | 'Sell';
-
-  export type SubmittedOrder = {
-    symbol: string;
-    side: OrderSide;
-    quantity: number;
-    price: number;
-  };
+  export type { SubmittedOrder } from '@trading/trade-types';
 
   export type TradePanelProps = {
     selectedSymbol?: string;

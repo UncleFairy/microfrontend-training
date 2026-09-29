@@ -11,14 +11,23 @@ apps/
 └── trade-panel-b/   A remote application: market data and a watchlist.
 ```
 
-## Step 1: workspace foundation
+## Workspace structure
 
-This first step creates an **npm workspace**. An npm workspace lets several small
+This repository uses **npm workspaces**. An npm workspace lets several small
 applications live in one repository while still keeping their dependencies and
 commands organised.
 
-There is deliberately no React or Webpack code yet. First we create the project
-boundaries; in the next step we will make the shell run by itself.
+The application workspaces implement a React + Webpack Module Federation host
+and two remotes. The packages below intentionally share only stable primitives:
+
+```text
+packages/
+├── shared-ui/       Button, Card, and visual tokens.
+└── trade-types/     Order and Instrument domain types.
+```
+
+Feature state, watchlist data, and order-entry behaviour remain in the panels
+that own them.
 
 ### Useful commands (after the applications are added)
 
@@ -28,13 +37,21 @@ npm install
 
 # Run one application during development.
 npm run dev:shell
+
+# Verify TypeScript across application workspaces.
+npm run typecheck
+
+# Build every workspace that has a build script.
+npm run build
 ```
 
 ## Learning sequence
 
-1. **Workspace foundation** — this step.
+1. **Workspace foundation**.
 2. Build the React + Webpack shell application.
 3. Build both React + Webpack trade panels as standalone applications.
 4. Connect them with Webpack Module Federation.
 5. Exchange selected-symbol data safely through the shell.
-6. Add failure handling, testing, and deployment-oriented configuration.
+6. Add failure handling.
+7. Share stable UI primitives and trade domain types.
+8. Add testing and deployment-oriented configuration.
