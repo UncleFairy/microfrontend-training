@@ -62,13 +62,13 @@ they verify a different boundary: the applications working together at runtime.
 
 ## Shell integration tests
 
-The shell integration test loads contract-compatible test remotes instead of
-network-downloaded federation modules. It verifies the full selected-symbol and
-submitted-order flow through the shell while staying fast and deterministic.
+The shell integration test uses the actual exported Panel A and Panel B
+components with the shell's real state coordinator. It verifies the complete
+selected-symbol and submitted-order journey without replacing either panel.
 Run it alone with `npm run test --workspace=shell`.
 
-This is distinct from a future browser test, which will start the real remote
-servers and validate Webpack Module Federation's runtime loading.
+It does not fetch `remoteEntry.js`; a future browser test will start the real
+remote servers and validate Webpack Module Federation's runtime loading.
 
 ## Learning sequence
 
