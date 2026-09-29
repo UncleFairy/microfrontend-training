@@ -60,6 +60,16 @@ servers or Module Federation to be running.
 Integration tests for the shell and remotes will be added separately, because
 they verify a different boundary: the applications working together at runtime.
 
+## Shell integration tests
+
+The shell integration test loads contract-compatible test remotes instead of
+network-downloaded federation modules. It verifies the full selected-symbol and
+submitted-order flow through the shell while staying fast and deterministic.
+Run it alone with `npm run test --workspace=shell`.
+
+This is distinct from a future browser test, which will start the real remote
+servers and validate Webpack Module Federation's runtime loading.
+
 ## Learning sequence
 
 1. **Workspace foundation**.
