@@ -64,11 +64,14 @@ Each application will get a small `vercel.json` that says:
 ```text
 build command:      npm run build
 output directory:   dist
-framework:          Other
 ```
 
 These are static React/Webpack applications. Vercel will publish the generated
 `dist/` files; there is no server-side React application here.
+
+In the Vercel dashboard, choose the **Other** framework preset. It is a
+dashboard preset, not a valid `framework` value in `vercel.json`; the explicit
+build command and output directory provide the needed project configuration.
 
 We will also set safe cache headers. In particular, each panel's
 `remoteEntry.js` must revalidate on every request, because it tells the shell
