@@ -70,9 +70,11 @@ framework:          Other
 These are static React/Webpack applications. Vercel will publish the generated
 `dist/` files; there is no server-side React application here.
 
-We will also set safe cache headers. In particular, `remoteEntry.js` must not
-be cached for a long time, because it tells the shell which remote chunks to
-load after a panel is deployed.
+We will also set safe cache headers. In particular, each panel's
+`remoteEntry.js` must revalidate on every request, because it tells the shell
+which remote chunks to load after a panel is deployed. The shell applies the
+same policy to its static output because its current chunk filenames are not
+content-hashed.
 
 **Check:** `npm run build` succeeds before any cloud deployment is attempted.
 
