@@ -68,6 +68,8 @@ module.exports = {
 
   devServer: {
     port: 3000,
+    // The remotes are served from other local origins during federation tests.
+    allowedHosts: 'all',
     // If the browser visits a route directly, serve index.html so React can
     // eventually handle that route.
     historyApiFallback: true

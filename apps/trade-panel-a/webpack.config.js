@@ -61,6 +61,8 @@ module.exports = {
 
   devServer: {
     port: 3001,
+    // Permit the shell's separate local origin to request federation assets.
+    allowedHosts: 'all',
     // The shell runs on port 3000, so the federation container and its lazy
     // chunks must be usable from a different local origin during development.
     headers: {

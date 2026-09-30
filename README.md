@@ -70,6 +70,27 @@ Run it alone with `npm run test --workspace=shell`.
 It does not fetch `remoteEntry.js`; a future browser test will start the real
 remote servers and validate Webpack Module Federation's runtime loading.
 
+## Browser end-to-end test
+
+Playwright starts the shell and both remote development servers, launches a
+real Chromium browser, then tests the same trade workflow through the page.
+This is the layer that verifies the actual `remoteEntry.js` requests and
+runtime Module Federation loading.
+
+```bash
+# Run once after installing the project, to download Playwright's Chromium.
+npx playwright install chromium
+
+# Start all three apps automatically and run the browser test.
+npm run test:e2e
+
+# Observe the browser test in different ways.
+npm run test:e2e:headed  # show Chromium
+npm run test:e2e:debug   # step through actions in Playwright Inspector
+npm run test:e2e:ui      # open Playwright's interactive UI
+npm run test:e2e:trace   # record a trace for later inspection
+```
+
 ## Learning sequence
 
 1. **Workspace foundation**.

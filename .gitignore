@@ -10,3 +10,7 @@ dist/
 # Useful locally, but may contain private machine-specific settings.
 .env
 .env.local
+
+# Playwright output is generated when browser tests run.
+playwright-report/
+test-results/
