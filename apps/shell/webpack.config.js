@@ -4,6 +4,16 @@ const { ModuleFederationPlugin } = require('webpack').container;
 const dependencies = require('./package.json').dependencies;
 
 /**
+ * The shell needs the remote address while Webpack builds its federation
+ * container. Local development falls back to the two webpack-dev-server URLs;
+ * Vercel supplies the environment variables for preview and production builds.
+ */
+function remoteEntryUrl(variableName, localOrigin) {
+  const origin = process.env[variableName] || localOrigin;
+  return `${origin.replace(/\/$/, '')}/remoteEntry.js`;
+}
+
+/**
  * Webpack is the tool that prepares our source code for the browser.
  *
  * Module Federation lets this host load the two independently built trade
@@ -54,8 +64,14 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'shell',
       remotes: {
-        tradePanelA: 'tradePanelA@http://localhost:3001/remoteEntry.js',
-        tradePanelB: 'tradePanelB@http://localhost:3002/remoteEntry.js'
+        tradePanelA: `tradePanelA@${remoteEntryUrl(
+          'TRADE_PANEL_A_URL',
+          'http://localhost:3001',
+        )}`,
+        tradePanelB: `tradePanelB@${remoteEntryUrl(
+          'TRADE_PANEL_B_URL',
+          'http://localhost:3002',
+        )}`
       },
       shared: {
         react: { singleton: true, requiredVersion: dependencies.react },
